@@ -12,5 +12,5 @@ def isImageFile(fpath):
 		Returns whether or not the given path or filename is for an image file. The method just checks for some popular formats.
 	"""
 	path, fname = os.path.split(fpath)
-	if fname.endswith("png", "jpeg", "gif", "tiff", "bmp"): return True
+	if fname.endswith(("png", "jpeg", "gif", "tiff", "bmp")): return True
 	else: return False
