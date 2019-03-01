@@ -11,3 +11,8 @@ CILIA_GRAYSCALE = 2
 BACKGROUND_GRAYSCALE = 0
 CELL_GRAYSCALE = 1
 
+TRAIN_FILE = "../../files/train.txt"
+TEST_FILE = "../../files/test.txt"
+
+SMALL_TRAIN_FILE = "../../files/x_small_train.txt"
+SMALL_TEST_FILE = "../../files/x_small_test.txt"
