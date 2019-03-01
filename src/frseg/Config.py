@@ -6,4 +6,8 @@ Description: This module contains universal configuration for modules.
 """
 
 DATA_FILES_PATH = "../../files/"
+
 CILIA_GRAYSCALE = 2
+BACKGROUND_GRAYSCALE = 0
+CELL_GRAYSCALE = 1
+
