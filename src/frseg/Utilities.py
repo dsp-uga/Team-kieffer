@@ -8,8 +8,7 @@ Description: This module contains methods and classes that make life easier.
 import os
 import numpy as np
 from PIL import Image
-from Config import DATA_FILES_PATH
-from Config import CILIA_GRAYSCALE
+from Config import *
 
 MASKS_PATH = os.path.join(DATA_FILES_PATH, "masks/")
 
@@ -46,24 +45,37 @@ def readMask(hash, binarize=False):
 	if binarize:
 	 	ciliaMask = mat == CILIA_GRAYSCALE
 	 	backgroundMask = invertMask(ciliaMask)
-	 	mat[ciliaMask] = 1
-	 	mat[backgroundMask] = 0
+	 	mat[ciliaMask] = True
+	 	mat[backgroundMask] = False
 
 	return mat
 
 
-def displayMask(hash):
+def displayMask(hash, binarize=False):
 	"""
 		Displays the cilia mask against the given hash value.
 	"""
-	mask = readMask(hash, binarize=True)
-	im = Image.fromarray(mask * 255)
+	mask = readMask(hash, binarize)
+	if binarize: im = Image.fromarray(mask * 255)
+	else: im = Image.fromarray(mask * 127.5)
 	im.show()
+
+
+def readLines(filepath):
+	"""
+		Reads and returns a list of lines in the filepath.
+	"""
+	lines = []
+	with open(filepath, 'r') as infile:
+		for line in infile:
+			lines.append(infile)
+
+	return lines
 
 
 if __name__ == '__main__':
 	# Quick testing
-	displayMask("c581673f9684fd6952f38b6e0ae00a4e8eea6662d8635337da6bf067da0d9de7")
+	displayMask("ad6eac5d0cfc44219b69a507bc987d279568e54af6cb88b3682e26c8c4710970")
 
 
 
