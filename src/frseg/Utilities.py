@@ -7,17 +7,20 @@ Description: This module contains methods and classes that make life easier.
 
 import os
 import numpy as np
+import matplotlib.pyplot as matplot
 from PIL import Image
 from Config import *
 
 MASKS_PATH = os.path.join(DATA_FILES_PATH, "masks/")
+FRAMES_PATH = os.path.join(DATA_FILES_PATH, "data/frames")
 
 class UtilitiesError(Exception): pass
 class BadHashError(UtilitiesError): pass
 
+
 def isImageFile(fpath):
 	"""
-		Returns whether or not the given path or filename is for an image file. The method just checks for some popular formats.
+		Returns whether or not the given path or filename is for an image file. The method is crude at the moment and just checks for some popular formats.
 	"""
 	path, fname = os.path.split(fpath)
 	if fname.endswith(("png", "jpeg", "gif", "tiff", "bmp")): return True
@@ -33,7 +36,7 @@ def invertMask(mask):
 
 def readMask(hash, binarize=False):
 	"""
-		Reads the mask for the given hash and if binarize flag is set, makes the mask binary (1/0 : Cilia/Not-cilia)
+		Reads the mask for the given hash and if binarize flag is set, makes the mask binary (True/False : Cilia/Not-cilia)
 	"""
 	fpath = os.path.join(MASKS_PATH, hash + ".png")
 	if not os.path.isfile(fpath): raise BadHashError("Hash: " + hash + " does not exist OR does not have a mask against it.")
@@ -61,21 +64,36 @@ def displayMask(hash, binarize=False):
 	im.show()
 
 
+def displayHeatMap(mat):
+	"""
+		Dispalys the heat map for the given matrix.
+	"""
+	matplot.imshow(mat, cmap='hot')
+	matplot.show()
+
+
 def readLines(filepath):
 	"""
-		Reads and returns a list of lines in the filepath.
+		Reads and returns the lines of the given file as a list.
 	"""
 	lines = []
 	with open(filepath, 'r') as infile:
 		for line in infile:
-			lines.append(infile)
+			lines.append(line.strip())
 
 	return lines
 
 
+def getVideoFramesDirectory(hash):
+	"""
+		Returns the video frames directory for the given hash.
+	"""
+	return os.path.join(FRAMES_PATH, hash)
+
 if __name__ == '__main__':
 	# Quick testing
 	displayMask("ad6eac5d0cfc44219b69a507bc987d279568e54af6cb88b3682e26c8c4710970")
+
 
 
 
