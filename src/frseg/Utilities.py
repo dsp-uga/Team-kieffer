@@ -52,7 +52,18 @@ class ProgressBar:
 		sys.stdout.write("\033[F")
 		sys.stdout.flush()
 
+
+def flen(filename):
+	"""
+		File LENgth computes and returns the number of lines in a file. @filename <string> is path to a file. This is an epensive method to call for the whole file is read to determine the number of lines.
 		
+		returns: <integer> line count
+	"""
+	# Read and count lines.
+	with open(filename, 'r') as infile:
+		return sum((1 for line in infile))
+
+
 def isImageFile(fpath):
 	"""
 		Returns whether or not the given path or filename is for an image file. The method is crude at the moment and just checks for some popular formats.
