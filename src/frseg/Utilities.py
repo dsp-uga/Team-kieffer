@@ -18,6 +18,41 @@ class UtilitiesError(Exception): pass
 class BadHashError(UtilitiesError): pass
 
 
+class ProgressBar:
+	"""
+		A handrolled implementation of a progress bar. The bar displays the progress as a ratio like this: (1/360).
+	"""
+
+	def __init__(self, max = 100):
+		"""
+			Initialize the bar with the total number of units (scale).
+		"""
+		self.max = max
+		self.current = 0
+		print "Initiating download..... \n"
+
+	def update(self, add = 1):
+		"""
+			Record progress.
+		"""
+		self.current += add
+		self._clear()
+		self._display()
+
+	def _display(self):
+		"""
+			Print the completion ratio on the screen.
+		"""
+		print "(" + str(self.current) + "/" + str(self.max) + ")"
+
+	def _clear(self):
+		"""
+			Erase the old ratio from the console.
+		"""
+		sys.stdout.write("\033[F")
+		sys.stdout.flush()
+
+		
 def isImageFile(fpath):
 	"""
 		Returns whether or not the given path or filename is for an image file. The method is crude at the moment and just checks for some popular formats.
