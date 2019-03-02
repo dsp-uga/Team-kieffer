@@ -135,7 +135,9 @@ def getVideoFramesDirectory(hash):
 	"""
 		Returns the video frames directory for the given hash.
 	"""
-	return os.path.join(FRAMES_PATH, hash)
+	dir =  os.path.join(FRAMES_PATH, hash)
+	if not os.path.isdir(dir): raise BadHashError("No frame directory found against the hash: " + hash)
+	else: return dir
 
 
 if __name__ == '__main__':
