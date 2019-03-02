@@ -17,12 +17,15 @@ class FramesError(Exception): pass
 class BadPathError(FramesError): pass
 class UnexpectedDimensionsError(FramesError): pass
 
-def computeMean(dir):
+def computeMean(hash):
 	"""
 		Computes pixel means for the set of images in the given @directory. All the images in the directory must have the same resolution. The mean is computed per pixel and the results are returned as a numpy matrix.
 		
 		Note on space complexity: The method reads in one image at a time and processes it. In big-oh notation, the complexity is O(h.w).
 	"""
+	# Generate directory path
+	dir = getVideoFramesDirectory(hash)
+	
 	# Validate input directory
 	if not os.path.isdir(dir): raise BadPathError("Path: " + dir + " is not a directory.")
 	
@@ -57,19 +60,22 @@ def computeMean(dir):
 	else: return temp / count
 
 
-def computeVariance(dir):
+def computeVariance(hash):
 	"""
 		Computes variance by pixel for the set of images in the given @directory. All the images in the directory must have the same resolution. The variance is computed per pixel and the results are returned as a numpy matrix.
 		
 		Note on space complexity: The method reads in one image at a time and processes it. In big-oh notation, the complexity is O(h.w).
 	"""
+	# Generate directory path
+	dir = getVideoFramesDirectory(hash)
+	
 	# Validate input directory
 	if not os.path.isdir(dir): raise BadPathError("Path: " + dir + " is not a directory.")
 	# Empty Directory
 	if not len(os.listdir(dir)): raise BadPathError("Path: "+ dir + " does not contain any image files.")
 
 	# The mean matrix and a temp matrix for aggregating sum squared distances form the mean.
-	mean = computeMean(dir)
+	mean = computeMean(hash)
 	temp = np.zeros(mean.shape)
 	
 	# Number of images
@@ -88,6 +94,13 @@ def computeVariance(dir):
 		temp += (mean - mat) * (mean - mat)
 	
 	return temp / count
+
+
+def plotVariance(hash, markCilia=True):
+	"""
+		This method plots variance of each pixel across the video frames. If markCilia flag is set, cilia and non-cilia pixels are identified.
+	"""
+	pass
 
 
 if __name__ == '__main__':
@@ -110,8 +123,7 @@ if __name__ == '__main__':
 	
 	hashes = readLines(TRAIN_FILE)
 	for hash in hashes:
-		fpath = getVideoFramesDirectory(hash)
-		var = computeVariance(fpath)
+		var = computeVariance(hash)
 		mask = readMask(hash)
 		imask = invertMask(mask)
 		if var[mask].mean() < 40: means.append(var[mask].mean())
