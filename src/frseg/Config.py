@@ -12,6 +12,7 @@ BACKGROUND_GRAYSCALE = 0
 CELL_GRAYSCALE = 1
 
 VAR_PLOTS = "./plots/Variance/"
+DATA_VIZ = "./visuals"
 
 TRAIN_FILE = "../../files/train.txt"
 TEST_FILE = "../../files/test.txt"
