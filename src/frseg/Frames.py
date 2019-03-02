@@ -110,14 +110,16 @@ def plotVariance(hash, markCilia=True, save=False):
 
 	# Create variance scatterplot
 	matplot.figure()
-	matplot.scatter(xrange(cilias.size), cilias.flat, marker='+', color='red', label='cilia')
-	matplot.scatter(xrange(others.size), others.flat, marker='+', color='blue', label='others')
+	matplot.scatter(xrange(cilias.size), cilias.flat, marker='+', color='red', label='cilia var')
+	matplot.scatter(xrange(others.size), others.flat, marker='+', color='blue', label='others var')
+	matplot.scatter(xrange(others.size), [var.mean()] * var.size, marker = '_', color='green', label='mean var')
 	matplot.legend(loc='best')
 	
 	# Save or display
 	if save: matplot.savefig(os.path.join(VAR_PLOTS, hash + ".png"))
 	else: matplot.show()
 	matplot.close()
+
 
 
 if __name__ == '__main__':
@@ -134,10 +136,8 @@ if __name__ == '__main__':
 			 ]
 			 
 	hashes = readLines(TRAIN_FILE)
-	bar = ProgressBar(flen(TRAIN_FILE), message="Plotting....")
 	for hash in hashes:
 		plotVariance(hash, save=True)
-		bar.update()
 
 
 
