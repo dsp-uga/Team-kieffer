@@ -121,6 +121,35 @@ def plotVariance(hash, markCilia=True, save=False):
 	matplot.close()
 
 
+def plotCiliaCounts(hashes, percentages=False):
+	"""
+		Plot a scatterplot for the count of cilia cells in the given hashes. percentages flag dictates if the count should be transformed to percent cilia cells in the frame.
+	"""
+	# List to collect the results and a bar to track progress
+	results = []
+	bar = ProgressBar(max=len(hashes), message="Processing data ....")
+
+	# Read each mask and count the number of cilia pixels
+	for hash in hashes:
+		mask = readMask(hash)
+		elements, counts = np.unique(mask, return_counts=True)
+		
+		# Make a count-map and extract cilia count. The keys will simple be True and False where True stands for cilia pixels
+		cmap = dict(zip(elements, counts))
+		cilias = cmap.get(True, 0)
+		
+		# Collect result and update progress
+		if percentages: results.append(cilias/float(mask.size))
+		else: results.append(cilias)
+		bar.update()
+	
+	label = "%age" if percentages else "counts"
+	matplot.title("Cilia " + label)
+	matplot.scatter(xrange(len(results)), results, marker='+', color='blue', label = label)
+	matplot.scatter(xrange(len(results)), [mean(results)] * len(results), marker='_', color='red', label = "mean")
+	matplot.legend(loc='best')
+	matplot.show()
+
 
 if __name__ == '__main__':
 	dir = "/Users/nsghumman/Documents/DataSciencePracticum/Team-kieffer/files/data/frames/"
