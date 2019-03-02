@@ -154,6 +154,34 @@ def plotCiliaCounts(hashes, percentages=False):
 	matplot.show()
 
 
+def plotHeatMapVsMask(hash, threshold='mean+0sigma', save=False):
+	"""
+		Make visuals with thresholding for the video against the given hash. The format for @threshold is 'mean+Xsigma' where X is the number of standard deviations - a single digit non-negative integer. Each visual has 2 subplots:
+		
+			1. The heat-map of pixel variance
+			2. The mask
+	"""
+	# Compute Variance matrix and extract its dimensions
+	var = computeVariance(hash)
+	rows, cols = var.shape
+
+	# Make room for subplots
+	fig, axes = matplot.subplots(nrows=1, ncols=2)
+	(heatmap, mask) = axes
+	
+	# Variance heatmap
+	heatmap.imshow(var, cmap='hot')
+	
+	# The mask
+	mask.imshow(readMask(hash))
+
+	# Save figure
+	if save:
+			savedir = os.path.join(DATA_VISUALS_PATH, "Thresholding/")
+			fig.savefig(os.path.join(savedir, hash + ".png"))
+	else: matplot.show()
+
+
 if __name__ == '__main__':
 	# Quick testing etc.
 	diri = "/Users/nsghumman/Documents/DataSciencePracticum/Team-kieffer/files/data/frames/"
@@ -170,7 +198,9 @@ if __name__ == '__main__':
 			 
 	hashes = readLines(TRAIN_FILE)
 	for hash in hashes:
-		plotVariance(hash, save = True)
+		plotHeatMapVsMask(hash, save=False)
+		break
+
 
 
 
