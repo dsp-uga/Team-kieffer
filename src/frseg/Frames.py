@@ -98,7 +98,8 @@ def computeVariance(hash):
 
 def plotVariance(hash, markCilia=True, save=False):
 	"""
-		This method plots variance of each pixel across the video frames. If markCilia flag is set, cilia and non-cilia pixels are identified. The plots also contains lines for the mean and one stadard deviation above the mean.
+		This method plots variance of each pixel across the video frames. If markCilia flag is set, cilia and non-cilia pixels are identified.
+		If the save flag is set, the resultant plot is saved to the data visuals directory in the Variance subdirectory. Refer Config module for the addresses.
 	"""
 	# Compute variance matrix and read cilia mask
 	var = computeVariance(hash)
@@ -117,7 +118,8 @@ def plotVariance(hash, markCilia=True, save=False):
 	matplot.legend(loc='best')
 	
 	# Save or display
-	if save: matplot.savefig(os.path.join(VAR_PLOTS, hash + ".png"))
+	savedir = os.path.join(DATA_VISUALS_PATH, "Variance/")
+	if save: matplot.savefig(os.path.join(savedir, hash + ".png"))
 	else: matplot.show()
 	matplot.close()
 
