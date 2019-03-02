@@ -140,6 +140,13 @@ def getVideoFramesDirectory(hash):
 	else: return dir
 
 
+def mean(collection):
+	"""
+		Mean for a numeric collection
+	"""
+	return sum(collection) / (len(collection) or 1)
+
+
 if __name__ == '__main__':
 	# Quick testing
 	displayMask("4bad52d5ef5f68e87523ba40aa870494a63c318da7ec7609e486e62f7f7a25e8")
