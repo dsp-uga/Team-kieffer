@@ -11,7 +11,6 @@ CILIA_GRAYSCALE = 2
 BACKGROUND_GRAYSCALE = 0
 CELL_GRAYSCALE = 1
 
-VAR_PLOTS = "./plots/Variance/"
 DATA_VISUALS_PATH = "./visuals"
 
 TRAIN_FILE = "../../files/train.txt"
