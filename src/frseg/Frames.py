@@ -96,16 +96,33 @@ def computeVariance(hash):
 	return temp / count
 
 
-def plotVariance(hash, markCilia=True):
+def plotVariance(hash, markCilia=True, save=False):
 	"""
 		This method plots variance of each pixel across the video frames. If markCilia flag is set, cilia and non-cilia pixels are identified.
 	"""
-	pass
+	# Compute variance matrix and read cilia mask
+	var = computeVariance(hash)
+	mask = readMask(hash)
+
+	# Create two matrices: one recording variances for cilia pixels and the other for cell and the background
+	cilias = var * mask
+	others = var * invertMask(mask)
+
+	# Create variance scatterplot
+	matplot.figure()
+	matplot.scatter(xrange(cilias.size), cilias.flat, marker='+', color='red', label='cilia')
+	matplot.scatter(xrange(others.size), others.flat, marker='+', color='blue', label='others')
+	matplot.legend(loc='best')
+	
+	# Save or display
+	if save: matplot.savefig(os.path.join(VAR_PLOTS, hash + ".png"))
+	else: matplot.show()
+	matplot.close()
 
 
 if __name__ == '__main__':
 	dir = "/Users/nsghumman/Documents/DataSciencePracticum/Team-kieffer/files/data/frames/"
-	hash = "ad6eac5d0cfc44219b69a507bc987d279568e54af6cb88b3682e26c8c4710970"
+	hash = "7167939da20844cd30f8e63009c73bd89dbb36e3ec38878f32f9781228c53e2b"
 	temp = [ "cf621707b159de8b3e57f31ed68adbc5e239c41b389c0443c98d40d10e886e01",
 			   "dbafcd86679aeada1a8d977d691b89089142cdae380a2f3158099db5db0b713e",
 			   "ad6eac5d0cfc44219b69a507bc987d279568e54af6cb88b3682e26c8c4710970",
@@ -116,25 +133,11 @@ if __name__ == '__main__':
 			   "2237443684da4c50851e9c1ebc479859ec30bc52d5ee3a78266c9f07e8f17f91"
 			 ]
 			 
-	means = []
-	imeans = []
-	length = flen(TRAIN_FILE)
-	bar = ProgressBar(length, message = "Processing files .......")
-	
 	hashes = readLines(TRAIN_FILE)
+	bar = ProgressBar(flen(TRAIN_FILE), message="Plotting....")
 	for hash in hashes:
-		var = computeVariance(hash)
-		mask = readMask(hash)
-		imask = invertMask(mask)
-		if var[mask].mean() < 40: means.append(var[mask].mean())
-		if var[imask].mean() < 40: imeans.append(var[imask].mean())
+		plotVariance(hash, save=True)
 		bar.update()
-
-	matplot.scatter(xrange(len(means)), means, color='red')
-	matplot.scatter(xrange(len(imeans)), imeans, color='blue')
-	matplot.show()
-
-
 
 
 
