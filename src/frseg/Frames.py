@@ -182,6 +182,7 @@ def plotHeatMapVsMask(hash, sigma=0, save=False):
 	if save:
 			savedir = os.path.join(DATA_VISUALS_PATH, "Thresholding/")
 			fig.savefig(os.path.join(savedir, hash + ".png"))
+			matplot.close()
 	else:
 		matplot.show()
 
