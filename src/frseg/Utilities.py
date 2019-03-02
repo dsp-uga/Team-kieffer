@@ -13,7 +13,11 @@ from PIL import Image
 from Config import *
 
 MASKS_PATH = os.path.join(DATA_FILES_PATH, "masks/")
+LIT_MASKS_PATH = os.path.join(MASKS_PATH, "lit/")
 FRAMES_PATH = os.path.join(DATA_FILES_PATH, "data/frames")
+
+# Stretching constant for masks to scale the range of grayscales from [0, 2] to [0, 255]
+MASK_STRETCHING_CONSTANT = 127.5
 
 class UtilitiesError(Exception): pass
 class BadHashError(UtilitiesError): pass
@@ -107,7 +111,7 @@ def displayMask(hash, binarize=True):
 	"""
 	mask = readMask(hash, binarize)
 	if binarize: im = Image.fromarray(mask * 255)
-	else: im = Image.fromarray(mask * 127.5)
+	else: im = Image.fromarray(mask * MASK_STRETCHING_CONSTANT)
 	im.show()
 
 
