@@ -6,6 +6,7 @@ Description: This module contains methods and classes that make life easier.
 """
 
 import os
+import sys
 import numpy as np
 import matplotlib.pyplot as matplot
 from PIL import Image
@@ -23,13 +24,13 @@ class ProgressBar:
 		A handrolled implementation of a progress bar. The bar displays the progress as a ratio like this: (1/360).
 	"""
 
-	def __init__(self, max = 100):
+	def __init__(self, max = 100, message = "Initiating ....."):
 		"""
 			Initialize the bar with the total number of units (scale).
 		"""
 		self.max = max
 		self.current = 0
-		print "Initiating download..... \n"
+		print message + '\n'
 
 	def update(self, add = 1):
 		"""
@@ -80,7 +81,7 @@ def invertMask(mask):
 	return mask == False
 
 
-def readMask(hash, binarize=False):
+def readMask(hash, binarize=True):
 	"""
 		Reads the mask for the given hash and if binarize flag is set, makes the mask binary (True/False : Cilia/Not-cilia)
 	"""
@@ -100,7 +101,7 @@ def readMask(hash, binarize=False):
 	return mat
 
 
-def displayMask(hash, binarize=False):
+def displayMask(hash, binarize=True):
 	"""
 		Displays the cilia mask against the given hash value.
 	"""
@@ -136,9 +137,10 @@ def getVideoFramesDirectory(hash):
 	"""
 	return os.path.join(FRAMES_PATH, hash)
 
+
 if __name__ == '__main__':
 	# Quick testing
-	displayMask("ad6eac5d0cfc44219b69a507bc987d279568e54af6cb88b3682e26c8c4710970")
+	displayMask("4bad52d5ef5f68e87523ba40aa870494a63c318da7ec7609e486e62f7f7a25e8")
 
 
 
