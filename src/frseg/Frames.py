@@ -98,7 +98,7 @@ def computeVariance(hash):
 
 def plotVariance(hash, markCilia=True, save=False):
 	"""
-		This method plots variance of each pixel across the video frames. If markCilia flag is set, cilia and non-cilia pixels are identified.
+		This method plots variance of each pixel across the video frames. If markCilia flag is set, cilia and non-cilia pixels are identified. The plots also contains lines for the mean and one stadard deviation above the mean.
 	"""
 	# Compute variance matrix and read cilia mask
 	var = computeVariance(hash)
@@ -112,7 +112,8 @@ def plotVariance(hash, markCilia=True, save=False):
 	matplot.figure()
 	matplot.scatter(xrange(cilias.size), cilias.flat, marker='+', color='red', label='cilia var')
 	matplot.scatter(xrange(others.size), others.flat, marker='+', color='blue', label='others var')
-	matplot.scatter(xrange(others.size), [var.mean()] * var.size, marker = '_', color='green', label='mean var')
+	matplot.scatter(xrange(var.size), [var.mean()] * var.size, marker = '_', color='green', label='mean var')
+	matplot.scatter(xrange(var.size), [var.mean() + var.std()] * var.size, marker='_', color='yellow', label='mean + 1 sigma' )
 	matplot.legend(loc='best')
 	
 	# Save or display
@@ -152,7 +153,8 @@ def plotCiliaCounts(hashes, percentages=False):
 
 
 if __name__ == '__main__':
-	dir = "/Users/nsghumman/Documents/DataSciencePracticum/Team-kieffer/files/data/frames/"
+	# Quick testing etc.
+	diri = "/Users/nsghumman/Documents/DataSciencePracticum/Team-kieffer/files/data/frames/"
 	hash = "7167939da20844cd30f8e63009c73bd89dbb36e3ec38878f32f9781228c53e2b"
 	temp = [ "cf621707b159de8b3e57f31ed68adbc5e239c41b389c0443c98d40d10e886e01",
 			   "dbafcd86679aeada1a8d977d691b89089142cdae380a2f3158099db5db0b713e",
@@ -166,7 +168,8 @@ if __name__ == '__main__':
 			 
 	hashes = readLines(TRAIN_FILE)
 	for hash in hashes:
-		plotVariance(hash, save=True)
+		plotVariance(hash, save = True)
+
 
 
 
