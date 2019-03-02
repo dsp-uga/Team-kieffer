@@ -9,6 +9,7 @@ import os
 import sys
 import numpy as np
 import matplotlib.pyplot as matplot
+from scipy.misc import imsave
 from PIL import Image
 from Config import *
 
@@ -151,9 +152,21 @@ def mean(collection):
 	return sum(collection) / (len(collection) or 1)
 
 
+def stretchAndSaveMasks(hashes):
+	"""
+		This method stretches the contrast for the masks by rescaling them to 0-255 grayscale making the white regions in the masks cilia cells.
+	"""
+	# Read each mask and hash
+	for hash in hashes:
+		mask = readMask(hash, binarize=False)
+		result = mask * MASK_STRETCHING_CONSTANT
+		imsave(os.path.join(LIT_MASKS_PATH, hash + ".png"), result)
+
+
 if __name__ == '__main__':
-	# Quick testing
-	displayMask("4bad52d5ef5f68e87523ba40aa870494a63c318da7ec7609e486e62f7f7a25e8")
+	# Quick testing etc.
+	hashes = readLines(TRAIN_FILE)
+	stretchAndSaveMasks(hashes)
 
 
 
