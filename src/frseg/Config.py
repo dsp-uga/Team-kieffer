@@ -19,3 +19,4 @@ TEST_FILE = "../../files/test.txt"
 SMALL_TRAIN_FILE = "../../files/small_train.txt"
 SMALL_TEST_FILE = "../../files/small_test.txt"
 
+PREDICTIONS_DEST_PATH = "./predictions"
