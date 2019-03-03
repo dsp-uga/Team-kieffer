@@ -6,9 +6,11 @@ Description: This module contains statistical methods for manipulating image fra
 """
 
 import os
+import math
 from PIL import Image
 import numpy as np
 import matplotlib.pyplot as matplot
+from scipy.misc import imsave
 
 from Utilities import *
 from Config import *
@@ -191,17 +193,42 @@ def computeIoU(predicted, expected):
 	"""
 		Computes the Intersection over Union metric for two masks.
 	"""
-		intersection = predicted * expected
-		union = predicted + expected
+	intersection = predicted * expected
+	union = predicted + expected
+	
+	# Re-adjust union back to [0, 1] scale and return the result.
+	union[union == 2] = 1
+	return float(sum(intersection.flat)) / (sum(union.flat) or 1)
 
-		return float(sum(intersection)) / (sum(union) or 1)
+
+def applyMeanThreshold(mat, sigma=0):
+	"""
+		Apply mean threhsold to the matrix. Optionally, one can move the threshold up or down @sigma standard deviations. The threshold excludes mean.
+	"""
+	result = mat * (mat > mat.mean() + sigma*mat.std())
+	return result
+
+
+def eval(hashes, sigma=0):
+	"""
+		Predict cilia masks and evaluate them with the IoU metric returning the mean IoU score.
+	"""
+	scores = []
+	for hash in hashes:
+		var = computeVariance(hash)
+		result = applyMeanThreshold(var, sigma)
+		mask = result != 0
+		iou = computeIoU(mask, readMask(hash))
+		scores.append(iou)
+
+	return mean(scores)
 
 
 if __name__ == '__main__':
 	# Quick testing etc.
-	hashes = readLines(TRAIN_FILE)
-	for hash in hashes:
-		plotHeatMapVsMask(hash, sigma=0, save=True)
+	hashes = readLines(SMALL_TRAIN_FILE)
+	print "Mean IoU score: " + str(eval(hashes, sigma=2))
+
 
 
 
