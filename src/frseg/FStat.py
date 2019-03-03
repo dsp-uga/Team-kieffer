@@ -214,20 +214,22 @@ def eval(hashes, sigma=0):
 		Predict cilia masks and evaluate them with the IoU metric returning the mean IoU score.
 	"""
 	scores = []
+	bar = ProgressBar(max=len(hashes), message="Computing IoUs ...")
 	for hash in hashes:
 		var = computeVariance(hash)
 		result = applyMeanThreshold(var, sigma)
 		mask = result != 0
 		iou = computeIoU(mask, readMask(hash))
 		scores.append(iou)
+		bar.update()
 
 	return mean(scores)
 
 
 if __name__ == '__main__':
 	# Quick testing etc.
-	hashes = readLines(SMALL_TRAIN_FILE)
-	print "Mean IoU score: " + str(eval(hashes, sigma=2))
+	hashes = readLines(TRAIN_FILE)
+	print "Mean IoU: " + str(eval(hashes))
 
 
 
