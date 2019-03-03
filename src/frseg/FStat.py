@@ -226,10 +226,30 @@ def eval(hashes, sigma=0):
 	return mean(scores)
 
 
+def makePredictions(hashes, sigma=0):
+	"""
+		Predict cilia mask using variance thresholding. Default threhsold is the mean; @sigma is the number of standard deviations to go above the mean.
+	"""
+	# To display progress
+	bar = ProgressBar(max=len(hashes), message = "Computing masks ...")
+	
+	# Read each 'video'
+	for hash in hashes:
+		# Compute variance and make prediction by thresholding
+		var = computeVariance(hash)
+		result = applyMeanThreshold(var, sigma)
+		mask = result != 0
+		
+		# Adjust format and save
+		mask = mask.astype(np.int8) * 2
+		imsave(os.path.join(PREDICTIONS_DEST_PATH, hash + ".png"), mask)
+		bar.update()
+
+
 if __name__ == '__main__':
 	# Quick testing etc.
-	hashes = readLines(TRAIN_FILE)
-	print "Mean IoU: " + str(eval(hashes))
+	hashes = readLines(TEST_FILE)
+	makePredictions(hashes)
 
 
 
