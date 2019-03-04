@@ -191,7 +191,7 @@ def plotHeatMapVsMask(hash, sigma=0, save=False):
 
 def computeIoU(predicted, expected):
 	"""
-		Computes the Intersection over Union metric for two masks.
+		Computes the Intersection over Union metric for two binary masks.
 	"""
 	intersection = predicted * expected
 	union = predicted + expected
@@ -211,24 +211,31 @@ def applyMeanThreshold(mat, sigma=0):
 
 def eval(hashes, sigma=0):
 	"""
-		Predict cilia masks and evaluate them with the IoU metric returning the mean IoU score.
+		Predict cilia masks using mean thresholding and evaluate them with the IoU metric returning the mean IoU score across the dataset. @sigma is an optional parameter signifying the number of standard deviations to go above or below the mean for threhsolding.
 	"""
+	# Initialize a list to store scores and a bar to keep track of progress.
 	scores = []
 	bar = ProgressBar(max=len(hashes), message="Computing IoUs ...")
+	
+	# Read each set of frames, predict mask and update the scores list.
 	for hash in hashes:
+		# Compute variance and threshold matrix to generate the mask.
 		var = computeVariance(hash)
 		result = applyMeanThreshold(var, sigma)
+		
+		# Binarize the mask and compute and append the IoU score.
 		mask = result != 0
 		iou = computeIoU(mask, readMask(hash))
 		scores.append(iou)
 		bar.update()
 
+	# Return just the mean IoU of the dataset.
 	return mean(scores)
 
 
 def makePredictions(hashes, sigma=0):
 	"""
-		Predict cilia mask using variance thresholding. Default threhsold is the mean; @sigma is the number of standard deviations to go above the mean.
+		Predict (and save) cilia mask using variance thresholding. Default threhsold is the mean; @sigma is the number of standard deviations to go above the mean. The resultant greyscale is a single channel grayscale with 2 for cilia pixels and 0 otherwise.
 	"""
 	# To display progress
 	bar = ProgressBar(max=len(hashes), message = "Computing masks ...")
@@ -241,8 +248,10 @@ def makePredictions(hashes, sigma=0):
 		mask = result != 0
 		
 		# Adjust format and save
-		mask = mask.astype(np.int8) * 2
-		imsave(os.path.join(PREDICTIONS_DEST_PATH, hash + ".png"), mask)
+		mask = mask.astype(np.uint8) * 2
+		summarizeNumpyArray(mask)
+		im = Image.fromarray(mask)
+		im.save(os.path.join(PREDICTIONS_DEST_PATH, hash + ".png"))
 		bar.update()
 
 
@@ -250,6 +259,7 @@ if __name__ == '__main__':
 	# Quick testing etc.
 	hashes = readLines(TEST_FILE)
 	makePredictions(hashes)
+
 
 
 
