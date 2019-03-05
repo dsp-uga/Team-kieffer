@@ -235,9 +235,9 @@ def eval(hashes, sigma=0):
 
 def makePredictions(hashes, sigma=0):
 	"""
-		Predict (and save) cilia mask using variance thresholding. Default threhsold is the mean; @sigma is the number of standard deviations to go above the mean. The resultant greyscale is a single channel grayscale with 2 for cilia pixels and 0 otherwise.
+		Predict (and save) cilia mask using variance thresholding. Default threhsold is the mean; @sigma is the number of standard deviations to go above the mean. The resultant greyscale is a single channel grayscale with 2 for cilia pixels and 0 otherwise. Observe the save directory at the end of this method and refer Config file to find out what it is.
 	"""
-	# To display progress
+	# Initialize a bar to display progress
 	bar = ProgressBar(max=len(hashes), message = "Computing masks ...")
 	
 	# Read each 'video'
@@ -245,11 +245,12 @@ def makePredictions(hashes, sigma=0):
 		# Compute variance and make prediction by thresholding
 		var = computeVariance(hash)
 		result = applyMeanThreshold(var, sigma)
-		mask = result != 0
 		
-		# Adjust format and save
+		# Alter the mask to have 2s for cilia pixels and 0s otherwise
+		mask = result != 0
 		mask = mask.astype(np.uint8) * 2
-		summarizeNumpyArray(mask)
+
+		# Save prediction
 		im = Image.fromarray(mask)
 		im.save(os.path.join(PREDICTIONS_DEST_PATH, hash + ".png"))
 		bar.update()
