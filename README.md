@@ -3,7 +3,7 @@
 
 
 # Introduction
-Cilia are microscopic hair like structure that protrude form cell bodies. This project aims to implement methods to segment cilia pixels from a cell body video (a series of images). Presently, this project implements just one method - a statistical approach to distinguish cilia pixels from the static background. To get a feel for the problem, it would be adviseable to explore the project dataset that's in the `files/` directory. The full problem definition can be accessed (here)[https://github.com/dsp-uga/sp19/blob/master/projects/p2/project2.pdf].
+Cilia are microscopic hair like structure that protrude form cell bodies. This project aims to implement methods to segment cilia pixels from a cell body video (a series of images). Presently, this project implements just one method - a statistical approach to distinguish cilia pixels from the static background. To get a feel for the problem, it would be adviseable to explore the project dataset that's in the `files/` directory. The full problem definition can be accessed here [https://github.com/dsp-uga/sp19/blob/master/projects/p2/project2.pdf].
 
 # Pre-requisites
 This package relies on `Python Imaging Library (Pillow)`, `numpy`, and `matplotlib`, each of which is easily installable using pip - the python package manager as:
