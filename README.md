@@ -17,35 +17,35 @@ pip install matplotlib
 The project directory is structured as follows:
 ```
 .
-|---README.md										# Master README
+|---README.md			# Master README
 |---CONTRIBUTORS.md								
-|---files/											# Contains project dataset
+|---files/			# Contains project dataset
       |---data/
-		    |---archives							# Compressed dataset files
+		    |---archives			# Compressed dataset files
 		          |---<hash>.tar					
-		    |---frames								# Uncompressed video frames
+		    |---frames				# Uncompressed video frames
 				   |---<hash>/
 				         |---<frame00xx>.png		
-      |---masks/									# Masks highlighting cilia pixels for a subset of dataset
+      |---masks/			# Masks highlighting cilia pixels for a subset of dataset
             |---<hash>.png
-            |---lit/								# The same masks with rescaled greyscale values to highlight things 
+            |---lit/			# The same masks with rescaled greyscale values to highlight things 
                  |---<hash>.png
-      |---train.txt								# File specifying the subset of dataset to be used for training
-      |---test.txt									# Likewise for test
-      |---small_train.txt							# Specification like above but relatively small
-      |---small_test.txt							# Likewise
+      |---train.txt			# File specifying the subset of dataset to be used for training
+      |---test.txt			# Likewise for test
+      |---small_train.txt		# Specification like above but relatively small
+      |---small_test.txt		# Likewise
 |---src/
-     |---thresholding								# Takes a mean thresholding approach to segmentation
-              |---Config.py						# File specifying where to find data etc.
-              |---FStat.py						# Main module implementing threhsolding and mask generation
-              |---Utilities.py					# Helper methods to make life easier
-			   |---predictions						# Dir to save the predicted masks
+     |---thresholding			# Takes a mean thresholding approach to segmentation
+              |---Config.py		# File specifying where to find data etc.
+              |---FStat.py		# Main module implementing threhsolding and mask generation
+              |---Utilities.py		# Helper methods to make life easier
+			   |---predictions			# Dir to save the predicted masks
 					   |---<hash.png>				
-					   |---p2.tar					# Submission
-					   |---Lit/					# Rescaled masks making them human visible
+					   |---p2.tar		# Submission
+					   |---Lit/		# Rescaled masks making them human visible
 			  	         |---<hash>.png			
-	 		   |---visuals/						# Dir to save visuals in
-				      |---README.md				# File explaining the visuals
+	 		   |---visuals/				# Dir to save visuals in
+				      |---README.md		# File explaining the visuals
 				      |---Thresholding/			
 							  |---<hash>.png
 				      |---Variance
