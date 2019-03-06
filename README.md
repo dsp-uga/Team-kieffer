@@ -21,11 +21,11 @@ The project directory is structured as follows:
 |---CONTRIBUTORS.md								
 |---files/			# Contains project dataset
       |---data/
-		    |---archives			# Compressed dataset files
-		          |---<hash>.tar					
-		    |---frames				# Uncompressed video frames
-				   |---<hash>/
-				         |---<frame00xx>.png		
+            |---archives			# Compressed dataset files
+                   |---<hash>.tar					
+            |---frames				# Uncompressed video frames
+                   |---<hash>/
+                         |---<frame00xx>.png		
       |---masks/			# Masks highlighting cilia pixels for a subset of dataset
             |---<hash>.png
             |---lit/			# The same masks with rescaled greyscale values to highlight things 
@@ -40,14 +40,14 @@ The project directory is structured as follows:
               |---FStat.py		# Main module implementing threhsolding and mask generation
               |---Utilities.py		# Helper methods to make life easier
 			   |---predictions			# Dir to save the predicted masks
-					   |---<hash.png>				
+				   |---<hash.png>				
 					   |---p2.tar		# Submission
 					   |---Lit/		# Rescaled masks making them human visible
-			  	         |---<hash>.png			
+			  	                |---<hash>.png			
 	 		   |---visuals/				# Dir to save visuals in
 				      |---README.md		# File explaining the visuals
 				      |---Thresholding/			
-							  |---<hash>.png
+					        |---<hash>.png
 				      |---Variance
 				             |---<hash>.png
 ```
